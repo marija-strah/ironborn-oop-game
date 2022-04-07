@@ -10,9 +10,21 @@ class Game {
     }
 
     start(){
-        this.player = new Player();
-        this.player.domElement = this.create('player'); //create a dom element with the class "player"
-        this.draw(this.player);    
+      // create n draw player
+      this.player = new Player();
+      this.player.domElement = this.create("player"); //create a dom element with the class "player"
+      this.draw(this.player);
+
+      // create n draw an obstacle
+      this.obstacle = new Obstacle();
+      this.obstacle.domElement = this.create("obstacle");
+      this.draw(this.obstacle);
+
+      // move obstacle
+      setInterval(() => {
+        this.obstacle.moveDown();
+        this.draw(this.obstacle);
+      }, 100);
     }
 
     movePlayer(direction) {
@@ -27,7 +39,7 @@ class Game {
 
 class Player {
     constructor() {
-        this.positionX = 0;     //initial position (value) in horizontal axis
+        this.positionX = 50;     //initial position (value) in horizontal axis
         this.positionY = 0;
         this.domElement = null;
 
@@ -45,8 +57,21 @@ class Player {
     moveRight() {
         this.positionX++;
     }
+
 }
 
+
+class Obstacle {
+    constructor() {
+        this.positionX = 50;
+        this.positionY = 100;
+        this.docElement = null;
+    }
+
+    moveDown() {
+        this.positionY--;
+    }
+}
 
 // for testing purposes
 /*const myPlayer = new Player();
