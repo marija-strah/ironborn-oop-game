@@ -18,7 +18,7 @@ function drawDomElement(instance) {
     console.log("the element to paint is... ", instance.domElement)
     console.log("new horizontal position will be... ", instance.positionX)
 
-    //whnever this function is called, the color wil change
+    //whenever this function is called, the color wil change
 
     instance.domElement.style.backgroundColor = "red";
 
