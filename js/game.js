@@ -6,73 +6,82 @@ class Game {
         this.time = 0;
         this.player = null;
         //this.createElement = createElement; - if this, then createElement in constructor
-        this.obstacles = [];
+        this.obstacles = [];    //array of instances of the class Obstacle
         this.create = create;
         this.draw = draw;
     }
 
     start(){
-      // create n draw player
-      this.player = new Player();
-      this.player.domElement = this.create("player"); //create a dom element with the class "player"
-      this.draw(this.player);
 
-      // create n draw an obstacle
-      this.obstacle = new Obstacle();
-      this.obstacle.domElement = this.create("obstacle");
-      this.draw(this.obstacle);
+        // create & draw player
+        this.player = new Player();
+        this.player.domElement = this.create("player"); //create a dom element with the class "player"
+        this.draw(this.player);
 
-      // move obstacle
-      setInterval(() => {
+        setInterval( () => {
+            
+            // move obstacles
+            this.obstacles.forEach( (obstacle) => {
+                obstacle.moveDown();
+                this.draw(obstacle);
+                this.detectCollision(obstacle);
+                this.detectObstacleOutside(obstacle);
+            });
 
-        this.obstacles.forEach((obstacle) => {
-            obstacle.moveDown();
-            this.draw(obstacle);
-        });
+            // create & draw an obstacles
+            if(this.time % 20 === 0){
+                const newObstacle = new Obstacle();
+                newObstacle.domElement = this.create("obstacle");
+                this.obstacles.push(newObstacle);
+            }
 
-        //this.draw();
+            this.time++;
 
-
-        //console.log("moving obstacles....");
-        // - same as the forEach line: this.obstacle.moveDown(); >> move down
-        // this.draw(this.obstacle);  /// >> draw
-
-        if (this.time % 30 === 0) {
-            // create new obstacles
-            console.log("create new obstacle....");
-
-            const newObstacle = new Obstacle();
-            newObstacle.domElement = this.create("obstacle");
-
-
-            this.obstacles.push(newObstacle);
-
-
-            //this.draw(this.obstacle);
-        
-        }
-
-        this.time++;
-      }, 50);
+        }, 50);        
     }
 
-    movePlayer(direction) {
-        if(direction === "left") {
-            this.player.moveLeft()
-        } else if (direction === "right") {
-            this.player.moveRight();
+    // clg obstacle - insntace of a class
+
+        // rect1 -> player
+        // rect2 -> obstacle
+
+        detectCollision(obstacle){
+            if (this.player.positionX < obstacle.positionX + obstacle.width &&
+                this.player.positionX + this.player.width > obstacle.positionX &&
+                this.player.positionY < obstacle.positionY + obstacle.height &&
+                this.player.height + this.player.positionY > obstacle.positionY) {
+                    console.log("game over")
+                    alert('game over')
+            }
         }
-        this.draw(this.player); // call function that repaints UI
-    }
+
+        detectObstacleOutside(obstacle) {
+            if(obstacle.positionY < 0) {
+                this.obstacles.shift();      //remove it from array
+                obstacle.domElement.remove();   // remove from DOM
+
+                console.log(obstacle);
+                //console.log("remove this obstacle");
+            }
+        }
+
+        movePlayer(direction){
+            if(direction === "left"){
+                this.player.moveLeft();
+            } else if (direction === "right"){
+                this.player.moveRight();
+            }
+            this.draw(this.player);
+        }
 }
 
 class Player {
     constructor() {
-        this.positionX = 50;     //initial position (value) in horizontal axis
+        this.positionX = 45;     //initial position (value) in horizontal axis
         this.positionY = 0;
+        this.width = 10;
+        this.height = 10;
         this.domElement = null;
-
-
     }
 
     moveLeft(){
@@ -92,8 +101,10 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.positionX = 50;
-        this.positionY = 100;
+        this.positionX = Math.random() * (90 - 0);
+        this.positionY = 90;
+        this.width = 10;
+        this.height = 10;
         this.docElement = null;
     }
 

@@ -14,6 +14,6 @@
 .obstacle {
     position: absolute;
     background-color: rgb(226, 14, 71);
-    height: 20px;
-    width: 120px;
+   /* height: 20px;
+    width: 120px;*/
 }

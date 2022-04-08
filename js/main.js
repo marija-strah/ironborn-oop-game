@@ -20,10 +20,13 @@ function drawDomElement(instance) {
 
     //whenever this function is called, the color wil change
 
+    instance.domElement.style.width = instance.width + "vw";
+    instance.domElement.style.height = instance.height + "vh";
+
     instance.domElement.style.backgroundColor = "red";
 
-    instance.domElement.style.left = instance.positionX + "%";
-    instance.domElement.style.bottom = instance.positionY + "%";
+    instance.domElement.style.left = instance.positionX + "vw";
+    instance.domElement.style.bottom = instance.positionY + "vh";
 
 }
 
